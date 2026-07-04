@@ -1,5 +1,3 @@
-SCHEMA =
-
 """
 Shared schema definitions for the project.
 

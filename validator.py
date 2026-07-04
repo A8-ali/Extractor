@@ -6,7 +6,7 @@ from __future__ import annotations
 
 import re
 from typing import Any
-
+from errors import InvalidAgeError
 from schema import SCHEMA, DEFAULT_VALUES
 
 
@@ -56,8 +56,9 @@ def _validate_types(data: dict[str, Any]) -> None:
     if isinstance(age, str):
         try:
             data["age"] = int(age.strip())
-        except ValueError:
+        except Exception as e:
             data["age"] = None
+            raise InvalidAgeError(f"age must be int: {e}") from e
         return
 
     data["age"] = None

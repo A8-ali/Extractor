@@ -1,14 +1,10 @@
 import json
 import os
-import requests
 
+from api_client import call_api
 from schema import SCHEMA
-from errors import APIError, ExtractionError
-from config import (
-    API_KEY,
-    API_ENDPOINT,
-    MODEL,
-)
+from errors import ExtractionError
+
 def build_prompt(text: str) -> str:
     """
     Build the prompt for the AI model.
@@ -52,42 +48,6 @@ Resume:
 
 {text}
 """
-
-
-def call_api(prompt: str) -> str:
-    """
-    Send the prompt to OpenRouter.
-    """
-
-    if not API_KEY:
-        raise APIError("API key not found.")
-
-    headers = {
-        "Authorization": f"Bearer {API_KEY}",
-        "Content-Type": "application/json",
-    }
-
-    payload = {
-        "model": MODEL,
-        "messages": [
-            {
-                "role": "user",
-                "content": prompt
-            }
-        ]
-    }
-
-    response = requests.post(
-        API_ENDPOINT,
-        headers=headers,
-        json=payload,
-        timeout=60
-    )
-
-    if response.status_code != 200:
-        raise APIError(response.text)
-
-    return response.json()["choices"][0]["message"]["content"]
 
 
 def parse_response(response: str) -> dict:

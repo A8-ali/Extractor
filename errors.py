@@ -16,3 +16,8 @@ class APIError(Exception):
 class ExtractionError(Exception):
     """Raised when extracted data is invalid."""
     pass
+
+
+class InvalidAgeError(Exception):
+    """Rasied when age is not int and can not convert that"""
+    pass
